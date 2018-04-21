@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<!-- <interceptors>
+		<interceptor-stack name="default">
+			<interceptor-ref name="exception">
+				<param name="logEnabled">true</param>
+				<param name="logLevel">warn</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</interceptor-stack>
+	</interceptors>
+	<default-interceptor-ref name="default"></default-interceptor-ref> -->
+	<package name="globalR" namespace="/" extends="struts-default">
+		<global-results>
+			<result name="error">/error.jsp</result>
+			<result name="forbide">/WEB-INF/jsp/common/forbide.jsp</result>
+		</global-results>
+	</package>
+	
+	<include file="config/struts/struts-u890.xml"></include>
+	<include file="config/struts/struts-tplus.xml"></include>
+	<include file="config/struts/struts-u8101.xml"></include>
+	
+	
+</struts>

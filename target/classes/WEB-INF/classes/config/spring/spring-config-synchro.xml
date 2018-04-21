@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans 
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context-3.0.xsd
+			http://www.springframework.org/schema/tx 
+			http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	
+	<bean id="cache" class="com.emi.cache.util.MemCachedCtrl" />
+	<bean id="cacheCtrldao" class="com.emi.cache.dao.impl.CacheCtrldaoImpl" scope="prototype">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+
+	<bean id="cacheCtrlService" class="com.emi.cache.service.impl.CacheCtrlServiceImpl"
+		scope="prototype">
+		<property name="cacheCtrldao" ref="cacheCtrldao"></property>
+	</bean>
+	<!-- 定时任务管理 1 缓存-->
+	<bean id="cacheTask" class="com.emi.cache.service.impl.CacheTaskImpl"
+		scope="prototype">
+		<property name="cacheCtrldao" ref="cacheCtrldao"></property>
+	</bean>
+
+	
+    <!-- ScheduledTimerTask类是对TimerTask的包装器实现，这样你就可以为这个任务定义触发器信息。 -->  
+    <bean id="mesTimerTask"  class="org.springframework.scheduling.timer.ScheduledTimerTask">  
+        <!-- 设置启动延迟 -->  
+        <property name="delay">  
+            <value>0</value>  <!-- 1800000 半小时 -->
+        </property>  
+        <!-- 后续延迟 -->  
+        <property name="period">  
+            <value>60000</value>
+        </property>  
+        <!-- 指定触发器信息 -->  
+        <property name="timerTask">  
+            <ref local="cacheTask" />  
+        </property>  
+    </bean>  
+      
+    <!-- 使用TimerFactoryBean类，你可以让Spring使用配置创建触发器，并为一组指定的ScheduledTimerTask bean自动创建Timer实例。 -->  
+    <bean id="timerFactory_1"  class="org.springframework.scheduling.timer.TimerFactoryBean">  
+        <property name="scheduledTimerTasks">  
+            <list>  
+                <ref local="mesTimerTask" />               
+            </list>  
+        </property>          
+    </bean>  
+	
+	<!--/////////////////////////////////////////////////////分割线  -->
+	
+    <!-- 定时任务管理 1 专门同步库存-->
+	<bean id="exeSynchroAllocationStock"  class="com.emi.wms.synchro.ExeSynchroAllocationStock" scope="prototype">
+		<property name="synchroServiceU8" ref="synchroServiceU8"></property>
+		<property name="synchroDaoU8" ref="synchroDaoU8"></property>
+		
+	</bean>
+	
+    <!-- ScheduledTimerTask类是对TimerTask的包装器实现，这样你就可以为这个任务定义触发器信息。 -->  
+    <bean id="exeTaskAllocationStock"  class="org.springframework.scheduling.timer.ScheduledTimerTask">  
+        <!-- 设置启动延迟 -->  
+        <property name="delay">  
+            <value>30000</value>  
+        </property>  
+        <!-- 后续延迟 -->  
+        <property name="period"> <!--15分钟  --> 
+             <value>900000</value>  
+           
+        </property>  
+        <!-- 指定触发器信息 -->  
+        <property name="timerTask">  
+            <ref local="exeSynchroAllocationStock" />  
+        </property>  
+    </bean>  
+      
+    <!-- 使用TimerFactoryBean类，你可以让Spring使用配置创建触发器，并为一组指定的ScheduledTimerTask bean自动创建Timer实例。 -->  
+    <bean id="timerFactory_2"  class="org.springframework.scheduling.timer.TimerFactoryBean">  
+        <property name="scheduledTimerTasks">  
+            <list>  
+                <ref local="exeTaskAllocationStock" />               
+            </list>  
+        </property>          
+    </bean> 
+    
+	<!-- 定时任务管理 2-->
+	<bean id="exeSynchro"  class="com.emi.wms.synchro.ExeSynchro" scope="prototype">
+		<property name="synchroServiceU8" ref="synchroServiceU8"></property>
+		<property name="synchroServiceTplus" ref="synchroServiceTplus"></property>
+		<property name="synchroServiceO2O" ref="synchroServiceO2O"></property>
+		<property name="synchroServiceT6" ref="synchroServiceT6"></property>
+        <property name="synchroServiceU8101" ref="synchroServiceU8101"></property>
+	</bean>
+	
+	<bean id="synchroServiceTplus"  class="com.emi.wms.synchro.service.SynchroServiceTplus" scope="prototype">
+	    <property name="synchroDaoTplus" ref="synchroDaoTplus"></property>
+	    <property name="emiPluginDao" ref="emiPluginDao"></property>
+	</bean>
+	
+	<bean id="synchroServiceU8"  class="com.emi.wms.synchro.service.SynchroServiceU890" scope="prototype">
+	    <property name="synchroDaoU8" ref="synchroDaoU8"></property>
+	    <property name="emiPluginDao" ref="emiPluginDao"></property>
+	    <property name="cacheCtrldao" ref="cacheCtrldao"></property>
+	</bean>
+
+    <bean id="synchroServiceU8101"  class="com.emi.wms.synchro.service.SynchroServiceU8101" scope="prototype">
+        <property name="synchroDaoU8101" ref="synchroDaoU8101"></property>
+        <property name="emiPluginDao" ref="emiPluginDao"></property>
+        <property name="cacheCtrldao" ref="cacheCtrldao"></property>
+    </bean>
+	
+	<bean id="synchroServiceO2O"  class="com.emi.wms.synchro.service.SynchroServiceO2O" scope="prototype">
+	    <property name="synchroDaoO2O" ref="synchroDaoO2O"></property>
+	    <property name="synchroDaoO2Oexternal" ref="synchroDaoO2Oexternal"></property>
+	</bean>
+	
+	
+	<bean id="synchroServiceT6"  class="com.emi.wms.synchro.service.SynchroServiceT6" scope="prototype">
+	    <property name="synchroDaoT6" ref="synchroDaoT6"></property>
+	    <property name="emiPluginDao" ref="emiPluginDao"></property>
+	</bean>
+	
+	<bean id="synchroDaoU8" class="com.emi.wms.synchro.dao.SynchroDaoU890" scope="prototype">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+    <bean id="synchroDaoU8101" class="com.emi.wms.synchro.dao.SynchroDaoU8101" scope="prototype">
+        <property name="jdbcTemplate" ref="jdbcTemplate"></property>
+    </bean>
+	
+	<bean id="synchroDaoT6" class="com.emi.wms.synchro.dao.SynchroDaoT6" scope="prototype">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="synchroDaoTplus" class="com.emi.wms.synchro.dao.SynchroDaoTplus" scope="prototype">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="synchroDaoO2O" class="com.emi.wms.synchro.dao.SynchroDaoO2O" scope="prototype">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="synchroDaoO2Oexternal" class="com.emi.wms.synchro.dao.SynchroDaoO2Oexternal" scope="prototype">
+		<property name="jdbcTemplate" ref="jdbcTemplate2"></property>
+	</bean>
+	
+	<!--/////////////////////////////////////////////////////分割线  -->
+	
+    <!-- ScheduledTimerTask类是对TimerTask的包装器实现，这样你就可以为这个任务定义触发器信息。 -->  
+    <bean id="exeTask"  class="org.springframework.scheduling.timer.ScheduledTimerTask">  
+        <!-- 设置启动延迟 -->  
+        <property name="delay">  
+            <value>9000</value>  
+        </property>  
+        <!-- 后续延迟 -->  
+        <property name="period">  <!--1分钟  -->
+            <value>60000</value>  
+        </property>  
+        <!-- 指定触发器信息 -->  
+        <property name="timerTask">  
+            <ref local="exeSynchro" />  
+        </property>  
+    </bean>  
+      
+    <!-- 使用TimerFactoryBean类，你可以让Spring使用配置创建触发器，并为一组指定的ScheduledTimerTask bean自动创建Timer实例。 -->  
+    <bean id="timerFactory_3"  class="org.springframework.scheduling.timer.TimerFactoryBean">  
+        <property name="scheduledTimerTasks">  
+            <list>  
+                <ref local="exeTask" />               
+            </list>  
+        </property>          
+    </bean> 
+    
+    	
+</beans>
