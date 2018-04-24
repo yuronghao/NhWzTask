@@ -55,37 +55,37 @@
 	<!--/////////////////////////////////////////////////////分割线  -->
 	
     <!-- 定时任务管理 1 专门同步库存-->
-	<bean id="exeSynchroAllocationStock"  class="com.emi.wms.synchro.ExeSynchroAllocationStock" scope="prototype">
-		<property name="synchroServiceU8" ref="synchroServiceU8"></property>
-		<property name="synchroDaoU8" ref="synchroDaoU8"></property>
-		
-	</bean>
-	
-    <!-- ScheduledTimerTask类是对TimerTask的包装器实现，这样你就可以为这个任务定义触发器信息。 -->  
-    <bean id="exeTaskAllocationStock"  class="org.springframework.scheduling.timer.ScheduledTimerTask">  
-        <!-- 设置启动延迟 -->  
-        <property name="delay">  
-            <value>30000</value>  
-        </property>  
-        <!-- 后续延迟 -->  
-        <property name="period"> <!--15分钟  --> 
-             <value>900000</value>  
-           
-        </property>  
-        <!-- 指定触发器信息 -->  
-        <property name="timerTask">  
-            <ref local="exeSynchroAllocationStock" />  
-        </property>  
-    </bean>  
+	<!--<bean id="exeSynchroAllocationStock"  class="com.emi.wms.synchro.ExeSynchroAllocationStock" scope="prototype">-->
+		<!--<property name="synchroServiceU8" ref="synchroServiceU8"></property>-->
+		<!--<property name="synchroDaoU8" ref="synchroDaoU8"></property>-->
+		<!---->
+	<!--</bean>-->
+	<!---->
+    <!--&lt;!&ndash; ScheduledTimerTask类是对TimerTask的包装器实现，这样你就可以为这个任务定义触发器信息。 &ndash;&gt;  -->
+    <!--<bean id="exeTaskAllocationStock"  class="org.springframework.scheduling.timer.ScheduledTimerTask">  -->
+        <!--&lt;!&ndash; 设置启动延迟 &ndash;&gt;  -->
+        <!--<property name="delay">  -->
+            <!--<value>30000</value>  -->
+        <!--</property>  -->
+        <!--&lt;!&ndash; 后续延迟 &ndash;&gt;  -->
+        <!--<property name="period"> &lt;!&ndash;15分钟  &ndash;&gt; -->
+             <!--<value>900000</value>  -->
+           <!---->
+        <!--</property>  -->
+        <!--&lt;!&ndash; 指定触发器信息 &ndash;&gt;  -->
+        <!--<property name="timerTask">  -->
+            <!--<ref local="exeSynchroAllocationStock" />  -->
+        <!--</property>  -->
+    <!--</bean>  -->
       
     <!-- 使用TimerFactoryBean类，你可以让Spring使用配置创建触发器，并为一组指定的ScheduledTimerTask bean自动创建Timer实例。 -->  
-    <bean id="timerFactory_2"  class="org.springframework.scheduling.timer.TimerFactoryBean">  
-        <property name="scheduledTimerTasks">  
-            <list>  
-                <ref local="exeTaskAllocationStock" />               
-            </list>  
-        </property>          
-    </bean> 
+    <!--<bean id="timerFactory_2"  class="org.springframework.scheduling.timer.TimerFactoryBean">  -->
+        <!--<property name="scheduledTimerTasks">  -->
+            <!--<list>  -->
+                <!--<ref local="exeTaskAllocationStock" />               -->
+            <!--</list>  -->
+        <!--</property>          -->
+    <!--</bean> -->
     
 	<!-- 定时任务管理 2-->
 	<bean id="exeSynchro"  class="com.emi.wms.synchro.ExeSynchro" scope="prototype">

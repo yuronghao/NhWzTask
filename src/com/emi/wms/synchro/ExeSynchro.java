@@ -163,18 +163,18 @@ public class ExeSynchro extends TimerTask {
 
 		}else if(Config.synchroType.equalsIgnoreCase("u8101")){
 			try{
-				synchroServiceU8101.synchroUnit(orgGid, sobGid);//同步单位
-				synchroServiceU8101.synchroUser(orgGid, sobGid);//同步用户
-				synchroServiceU8101.synchroInventoryClass(orgGid, sobGid);//同步存货分类
-				synchroServiceU8101.synchroInventory(orgGid, sobGid);//同步存货档案
-				synchroServiceU8101.synchroWareHouse(orgGid, sobGid);//同步仓库
-				synchroServiceU8101.synchroRdStyle(orgGid, sobGid); //同步收发类别
-				synchroServiceU8101.synchroPurchaseType(orgGid, sobGid); //同步采购类型
-				synchroServiceU8101.synchroGoodsAllocation(orgGid, sobGid);//同步货位
-				synchroServiceU8101.synchroProviderClass(orgGid, sobGid);//同步供应商分类档案
-				synchroServiceU8101.synchroProvider(orgGid, sobGid);//同步供应商档案
-				synchroServiceU8101.synchroDepartment(orgGid, sobGid);//同步部门档案
-				synchroServiceU8101.synchroPerson(orgGid, sobGid);//同步人员档案
+//				synchroServiceU8101.synchroUnit(orgGid, sobGid);//同步单位
+//				synchroServiceU8101.synchroUser(orgGid, sobGid);//同步用户
+//				synchroServiceU8101.synchroInventoryClass(orgGid, sobGid);//同步存货分类
+//				synchroServiceU8101.synchroInventory(orgGid, sobGid);//同步存货档案
+//				synchroServiceU8101.synchroWareHouse(orgGid, sobGid);//同步仓库
+//				synchroServiceU8101.synchroRdStyle(orgGid, sobGid); //同步收发类别
+//				synchroServiceU8101.synchroPurchaseType(orgGid, sobGid); //同步采购类型
+//				synchroServiceU8101.synchroGoodsAllocation(orgGid, sobGid);//同步货位
+//				synchroServiceU8101.synchroProviderClass(orgGid, sobGid);//同步供应商分类档案
+//				synchroServiceU8101.synchroProvider(orgGid, sobGid);//同步供应商档案
+//				synchroServiceU8101.synchroDepartment(orgGid, sobGid);//同步部门档案
+//				synchroServiceU8101.synchroPerson(orgGid, sobGid);//同步人员档案
 
 			}catch(Exception e){
 				e.printStackTrace();
@@ -182,7 +182,7 @@ public class ExeSynchro extends TimerTask {
 
 
 			try{
-				synchroServiceU8101.synchroProOrder(orgGid,sobGid);//同步采购订单
+//				synchroServiceU8101.synchroProOrder(orgGid,sobGid);//同步采购订单
 			}catch (Exception e){
 				e.printStackTrace();
 			}
